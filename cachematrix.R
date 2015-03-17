@@ -22,7 +22,7 @@ makeCacheMatrix <- function(x = matrix()) {
   getinverse <- function() {
     inv       
   }
-
+  
   # Last expression in the function is returned by default.
   # Here we simply collect all our functions in a list for the future $ sign use:
   list(setmatrix = setmatrix, getmatrix = getmatrix, setinverse = setinverse, getinverse = getinverse)
@@ -32,10 +32,10 @@ makeCacheMatrix <- function(x = matrix()) {
 ## cacheSolve() function computes the inverse of the matrix and uses environment to store matrix and it's inverse. 
 ## If the inverse has already been calculated and the matrix has not changed, 
 ## then the cachesolve() will retrieve the inverse from the cache/environment variable. 
-## If the matrix is new then cachsolve() will calculate new inverse and put it in a cache/environment along with the new matrix
+## If the matrix is new then cachsolve() will calculate new inverse and put it in a cache/environment
 
-## cacheSolve() accepts two variables: input matrix to calculate and a shared environment
-cacheSolve <- function(mat, E) {
+## cacheSolve() accepts two variables: the environment and the input matrix to calculate
+cacheSolve <- function(E, mat) {
   
   cached_mat <- E$getmatrix() # cached matrix
   
@@ -66,13 +66,13 @@ cacheSolve <- function(mat, E) {
 # E it's a shared environment in other words
 E <- makeCacheMatrix()
 
-# Next I'm going to load a matrix and the environment into my caching function "cacheSolve(mat1, E)"
+# Next I'm going to load a matrix and the environment into my caching function "cacheSolve(E, mat1)"
 mat1 = rbind(c(4, 3), c(3, 2)) # input matrix
-inverse = cacheSolve(mat1, E) # first time inverse will be calculated and cached
-inverse = cacheSolve(mat1, E) # this time inverse will be taken from the cache
+inverse = cacheSolve(E, mat1) # first time inverse will be calculated and cached
+inverse = cacheSolve(E, mat1) # this time inverse will be taken from the cache
 
 # And Finally I will load a different matrix to see how it will be cached on top of the preveous matrix
 cat("\n")
 mat2 = rbind(c(1, -1/4), c(-1/4, 1)) # new input matrix
-inverse = cacheSolve(mat2, E) # matrix compare will trigger inverse recalculation and caching of both, matrix and it's inverse
-inverse = cacheSolve(mat2, E) # and second time inverse will be taken from the cache
+inverse = cacheSolve(E, mat2) # matrix compare will trigger inverse recalculation and caching of both, matrix and it's inverse
+inverse = cacheSolve(E, mat2) # and second time inverse will be taken from the cache
